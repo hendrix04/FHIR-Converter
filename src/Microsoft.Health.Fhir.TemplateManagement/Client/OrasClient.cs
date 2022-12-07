@@ -140,7 +140,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             else
             {
-                throw new TemplateManagementException("Operation system is not supported");
+                #throw new TemplateManagementException("Operation system is not supported");
+                orasFileName = Constants.OrasFileForLinux;
             }
 
             // oras file is in the same directory with our tool.

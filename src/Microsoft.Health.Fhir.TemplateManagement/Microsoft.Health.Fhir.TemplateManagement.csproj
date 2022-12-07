@@ -8,8 +8,10 @@
     <OrasVersion>0.12.0</OrasVersion>
     <OrasWinTarGzFile>oras_win_amd64.tar.gz</OrasWinTarGzFile>
     <OrasOSXTarGzFile>oras_osx_amd64.tar.gz</OrasOSXTarGzFile>
+    <OrasLinuxTarGzFile>oras_linux_amd64.tar.gz</OrasLinuxTarGzFile>
     <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasWinUrl>
     <OrasOSXUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasOSXUrl>
+    <OrasLinuxUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_linux_amd64.tar.gz</OrasLinuxUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
@@ -76,6 +78,18 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="oras-Linux">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(BinFolder)$(OrasLinuxTarGzFile)">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
     
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="$(MakeDirectory) $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
@@ -96,5 +110,12 @@
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
     <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
+  </Target>
+  
+  <Target Name="DownloadLinuxOrasFile" BeforeTargets="Build">
+    <DownloadFile SourceUrl="$(OrasLinuxUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasLinuxTarGzFile)">
+      <Output TaskParameter="DownloadedFile" ItemName="Content" />
+    </DownloadFile>
+    <Exec Command="tar -xvf $(BinFolder)$(OrasLinuxTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-linux" />
   </Target>
 </Project>
