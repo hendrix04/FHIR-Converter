@@ -138,7 +138,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             {
                 orasFileName = Constants.OrasFileForOSX;
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
                 orasFileName = Constants.OrasFileForLinux;
             }
             else
