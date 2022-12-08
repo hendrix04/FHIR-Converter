@@ -110,7 +110,7 @@
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
     <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder)" />
-    <Move SourceFiles="$(BinFolder)oras" DestinationFolder="$(BinFolder)" DestinationFiles="oras-osx" />
+    <Move SourceFiles="$(BinFolder)oras" DestinationFiles="$(BinFolder)oras-osx" />
   </Target>
   
   <Target Name="DownloadLinuxOrasFile" BeforeTargets="Build">
@@ -118,6 +118,6 @@
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
     <Exec Command="tar -xvf $(BinFolder)$(OrasLinuxTarGzFile) -C $(BinFolder)" />
-    <Move SourceFiles="$(BinFolder)oras" DestinationFolder="$(BinFolder)" DestinationFiles="oras-linux" />
+    <Move SourceFiles="$(BinFolder)oras" DestinationFiles="$(BinFolder)oras-linux" />
   </Target>
 </Project>
