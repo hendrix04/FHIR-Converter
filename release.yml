@@ -228,7 +228,32 @@ stages:
     #need delete files for self-hosted agent
     - task: DeleteFiles@1
       inputs:
-        Contents: '**/*' 
+        Contents: '**/*'
+  
+  - job: Linux_Functional_Test
+    pool: 
+      vmImage: 'ubuntu-latest'
+    continueOnError: false
+    steps:
+    - checkout: none #skip checking out the default repository resource
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Artifacts'
+      inputs:
+        artifactName: FhirConverterBuild
+        downloadPath: $(System.DefaultWorkingDirectory)
+    - script: |
+        docker run --rm -d -p 5000:5000 --name registryLinux registry:2
+      displayName: start registryLinux
+    - script: |
+        chmod +x FhirConverterBuild/**/**/oras*
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+      displayName: Functional Tests
+    - task: Docker@2
+      displayName: stop registryLinux
+      condition: succeededOrFailed()
+      inputs:
+        command: stop
+        container: registryLinux
 
 - stage: Release
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
